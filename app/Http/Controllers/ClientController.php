@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
+use App\Photo;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -88,5 +89,13 @@ class ClientController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function all_photos()
+    {
+        $user_id= Auth::user()->id;
+        $photos=Photo::where('client_id', $user_id)->get();
+
+        return view('client.photos',compact('photos'));
     }
 }

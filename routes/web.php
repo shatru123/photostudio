@@ -28,6 +28,8 @@ Route::get('/admin', 'AdminController@index')
     ->name('admin');
 
 Route::get('/client', 'ClientController@index');
+Route::get('client/photos', 'ClientController@all_photos');
+
 
 Route::group(['middleware'=>'is_admin'], function(){
     Route::resource('admin/clients', 'AdminClientController');

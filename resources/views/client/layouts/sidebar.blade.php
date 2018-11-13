@@ -39,7 +39,7 @@
                 </ul>
             </li>
             <li class="sidebar-section-nav__item">
-                <a class="sidebar-section-nav__link" href="">
+                <a class="sidebar-section-nav__link" href="{{url('client/photos')}}">
                     <span class="sidebar-section-nav__item-icon iconfont-control-panel"></span>
                     <span class="sidebar-section-nav__item-text">Photos</span>
                 </a>
