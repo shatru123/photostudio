@@ -303,7 +303,7 @@
     <div class="dropdown navbar-dropdown">
         <a class="dropdown-toggle navbar-dropdown-toggle navbar-dropdown-toggle__user" data-toggle="dropdown" href="#">
             <img src="{{asset('images/backend/img/users/user-3.png')}}" alt="" class="navbar-dropdown-toggle__user-avatar">
-            <span class="navbar-dropdown__user-name">John Smith</span>
+            <span class="navbar-dropdown__user-name">{{ Auth::user()->name }}</span>
         </a>
         <div class="dropdown-menu navbar-dropdown-menu navbar-dropdown-menu__user">
             <div class="navbar-dropdown-user-content">
