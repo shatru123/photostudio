@@ -16,7 +16,7 @@
         {!! Form::open(array('url' => action('ClientController@download_sel'),'files'=>true,'method'=>'post') ) !!}
         <div class="page-content__header-meta">
             <a href="{{url('/client/download_all')}}" class="btn btn-info icon-left">
-                Download Zip  <span class="btn-icon mdi mdi-folder-download"></span>
+                Download All Zip  <span class="btn-icon mdi mdi-folder-download"></span>
             </a>
             {!! Form::submit('Download Selected Zip', ['class'=>'btn btn-info icon-left ']) !!}
         </div>
