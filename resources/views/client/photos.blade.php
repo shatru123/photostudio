@@ -18,12 +18,10 @@
             <a href="{{url('/client/download_all')}}" class="btn btn-info icon-left">
                 Download Zip  <span class="btn-icon mdi mdi-folder-download"></span>
             </a>
-            {!! Form::submit('Download Selected Zip!', ['class'=>'btn btn-info icon-left ']) !!}
+            {!! Form::submit('Download Selected Zip', ['class'=>'btn btn-info icon-left ']) !!}
         </div>
     </div>
     <div class="row">
-
-          
                   @foreach($photos as $photo)
                      <?php //$imagepath='public/images/'.$photo->photo_path; ?>
                 <div class="row col-xl-3">
@@ -43,8 +41,5 @@
    @endif
 </div>
 </div>
-
-
-
 
 @endsection
