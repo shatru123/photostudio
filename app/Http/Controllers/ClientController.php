@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Response;
+use Chumper;
 
 class ClientController extends Controller
 {
@@ -98,4 +101,36 @@ class ClientController extends Controller
 
         return view('client.photos',compact('photos'));
     }
+
+    public function download_all()
+    {
+
+
+        $files = glob(public_path('images/client_photos/'.Auth::user()->id.'/*'));
+
+        \Zipper::make(public_path('downloads/'.Auth::user()->id.'photos.zip'))->add($files)->close();
+
+        return  response()->download(public_path('downloads/'.Auth::user()->id.'photos.zip'));
+
+    }
+
+    public function download_sel()
+    {
+
+        $images = Input::get('img');
+
+        foreach ($images as $img)
+        {
+            $files = glob(public_path('images/client_photos/'.Auth::user()->id.'/'.$img));
+
+        }
+
+        \Zipper::make(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'))->add($files)->close();
+
+       // unlink(public_path('photos.zip'));
+
+        return  response()->download(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'));
+
+    }
+
 }

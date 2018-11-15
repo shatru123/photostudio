@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Photo;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Client;
 
@@ -19,8 +20,6 @@ class AdminClientController extends Controller
        // $id=0;
         $clients = User::all();
         return view('admin.clients.index',compact('clients'));
-
-
 
     }
 
@@ -48,9 +47,14 @@ class AdminClientController extends Controller
             'password' => 'required',
         ]);
 
-        $input = $request->all();
+//        $input =
 
-        $clients=User::create($input);
+        $clients=User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'type' => User::DEFAULT_TYPE,
+        ]);
 
 
         $client_id=$clients->id;
@@ -131,7 +135,7 @@ class AdminClientController extends Controller
         if($image = $request->file('file'))
         {
             $imagename = $image->getClientOriginalName();
-            $image->move('images', $imagename);
+            $image->move('images/client_photos/'.$clients->id, $imagename);
 
             $photo = Photo::create(['photo_path'=>$imagename,'client_id'=>$client_id]);
 
@@ -141,39 +145,6 @@ class AdminClientController extends Controller
 
 
     }
-
-
-
-
-//    public function update(Request $request, $id)
-//     {
-//         //
-//
-//         $input = $request->all();
-//
-//         if($file = $request->file('photo_id')){
-//
-//
-//             $name = time() . $file->getClientOriginalName();
-//
-//
-//             $file->move('images', $name);
-//
-//             $photo = Photo::create(['file'=>$name]);
-//
-//
-//             $input['photo_id'] = $photo->id;
-//      }
-//
-//
-//       Auth::user()->posts()->whereId($id)->first()->update($input);
-//
-//
-//         return redirect('/admin/posts');
-//
-//     }
-
-
 
 
 

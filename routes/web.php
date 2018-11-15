@@ -28,11 +28,16 @@ Route::get('/admin', 'AdminController@index')
     ->name('admin');
 
 Route::get('/client', 'ClientController@index');
+
 Route::get('client/photos', 'ClientController@all_photos');
 
+Route::get('client/download_all', 'ClientController@download_all');
+Route::post('client/download', 'ClientController@download_sel');
 
 Route::group(['middleware'=>'is_admin'], function(){
     Route::resource('admin/clients', 'AdminClientController');
-//    Route::post('admin/clients/images/{id}','AdminClientController@upload_images');
+
     Route::post('image/upload/store/{id}','AdminClientController@upload_images');
+
+
 });

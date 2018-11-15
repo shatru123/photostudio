@@ -15,7 +15,7 @@
                 </a>
             </div>
         </div>
-    {!! Form::open(['method'=>'POST', 'action'=> 'AdminClientController@store', 'class'=>' dropzone', 'files'=>true]) !!}
+    {!! Form::open(['method'=>'POST', 'action'=> 'AdminClientController@store', 'files'=>true]) !!}
 
 
           <div class="form-group">
@@ -30,8 +30,8 @@
            </div>
 
 
-        <div class="form-group">
-                {!! Form::label('photo_id', 'Photo:') !!}
+        {{--<div class="form-group">--}}
+                {{--{!! Form::label('photo_id', 'Photo:') !!}--}}
                 {{--{!! Form::file('photo_id', null, ['class'=>'form-control dropzone','id'=>'image-upload'])!!}--}}
         {{--<div class="fallback">--}}
                 {{--<input name="photo_id" type="file" multiple />--}}
@@ -49,7 +49,7 @@
       {{--</div>--}}
 
 
-        </div>
+        {{--</div>--}}
 
             <div class="form-group">
                 {!! Form::label('password', 'Password:') !!}
