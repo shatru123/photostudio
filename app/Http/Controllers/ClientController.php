@@ -116,16 +116,15 @@ class ClientController extends Controller
 
     public function download_sel()
     {
-
         $images = Input::get('img');
 
         foreach ($images as $img)
         {
             $files = glob(public_path('images/client_photos/'.Auth::user()->id.'/'.$img));
-
+            \Zipper::make(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'))->add($files)->close();
         }
 
-        \Zipper::make(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'))->add($files)->close();
+//        \Zipper::make(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'))->add($files)->close();
 
        // unlink(public_path('photos.zip'));
 
