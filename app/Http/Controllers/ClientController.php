@@ -124,10 +124,6 @@ class ClientController extends Controller
             \Zipper::make(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'))->add($files)->close();
         }
 
-//        \Zipper::make(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'))->add($files)->close();
-
-       // unlink(public_path('photos.zip'));
-
         return  response()->download(public_path('downloads/'.Auth::user()->id.'photos_sel.zip'));
 
     }

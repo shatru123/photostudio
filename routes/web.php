@@ -39,5 +39,13 @@ Route::group(['middleware'=>'is_admin'], function(){
 
     Route::post('image/upload/store/{id}','AdminClientController@upload_images');
 
+    Route::get('admin/clients/{id}/upload', 'AdminClientController@upload');
+    Route::get('admin/clients/test', 'AdminClientController@getFiles');
 
+});
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/laravel-filemanager', '\UniSharp\LaravelFilemanager\Controllers\LfmController@show');
+    Route::post('/laravel-filemanager/upload', '\UniSharp\LaravelFilemanager\Controllers\UploadController@upload');
+    // list all lfm routes here...
 });

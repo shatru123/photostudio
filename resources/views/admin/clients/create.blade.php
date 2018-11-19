@@ -29,6 +29,11 @@
             {!! Form::email('email', null, ['class'=>'form-control'])!!}
            </div>
 
+        <div class="form-group">
+            {!! Form::label('download', 'Allow Download Multiple Photos:') !!}
+            {!! Form::checkbox('download', 1, ['class'=>'form-control'])!!}
+        </div>
+
 
         {{--<div class="form-group">--}}
                 {{--{!! Form::label('photo_id', 'Photo:') !!}--}}

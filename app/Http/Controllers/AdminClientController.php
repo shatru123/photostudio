@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Client;
+use Illuminate\Support\Facades\Storage;
 
 class AdminClientController extends Controller
 {
@@ -47,14 +48,25 @@ class AdminClientController extends Controller
             'password' => 'required',
         ]);
 
-//        $input =
-
-        $clients=User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
-            'type' => User::DEFAULT_TYPE,
-        ]);
+        $allow=1;
+        if( $request->has('download')) {
+            $clients = User::create([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => Hash::make($request['password']),
+                'type' => User::DEFAULT_TYPE,
+                'download' =>$allow,
+            ]);
+        }
+        else
+        {
+            $clients = User::create([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => Hash::make($request['password']),
+                'type' => User::DEFAULT_TYPE,
+            ]);
+        }
 
 
         $client_id=$clients->id;
@@ -84,7 +96,6 @@ class AdminClientController extends Controller
     public function edit($id)
     {
         $client = User::findOrFail($id);
-
         $photo = User::findOrFail($client->id);
         return view('admin.clients.edit',compact('client','photo'));
     }
@@ -105,8 +116,32 @@ class AdminClientController extends Controller
             'password' => 'required',
         ]);
 
-        $input = $request->all();
-        // Photo::whereId($id)->first()->update($input);
+       // $input = $request->all();
+
+
+
+        $allow=1;
+        if( $request->has('download')) {
+            $input=([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => Hash::make($request['password']),
+                'type' => User::DEFAULT_TYPE,
+                'download' =>$allow,
+
+            ]);
+        }
+        else
+        {
+            $input=([
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'password' => Hash::make($request['password']),
+                'type' => User::DEFAULT_TYPE,
+
+            ]);
+        }
+
         User::whereId($id)->first()->update($input);
 
         return redirect('/admin/clients');
@@ -145,7 +180,73 @@ class AdminClientController extends Controller
 
 
     }
+    public function upload($id)
+    {
+        $clients = User::findOrFail($id);
+//        $photo = Photo::findOrFail($clients->id);
+        $photos=Photo::where('client_id', $id)->get();
+        $folders  = glob(public_path('images/client_photos/'.$id.'/*'));
+//        $folders = Storage::directories(public_path('images/client_photos/'.$id));
+//        $folders = Storage::allDirectories(public_path('images/client_photos/'.$id));
 
+        return view('admin.clients.upload',compact('clients','photos','folders'));
+
+    }
+    public function getFiles()
+    {
+        if(isset($_GET['operation'])) {
+
+            $except[] = base_path().'/vendor';
+            $except[] = base_path().'/tests';
+            $except[] = base_path().'/storage/framework';
+            $except[] = base_path().'/.env';
+
+            $fs = new \FileManager(base_path(), $except);
+            try {
+                $rslt = null;
+                switch($_GET['operation']) {
+                    case 'get_node':
+                        $node = isset($_GET['id']) && $_GET['id'] !== '#' ? $_GET['id'] : '/';
+                        $rslt = $fs->lst($node, (isset($_GET['id']) && $_GET['id'] === '#'));
+                        break;
+                    case "get_content":
+                        $node = isset($_GET['id']) && $_GET['id'] !== '#' ? $_GET['id'] : '/';
+                        $rslt = $fs->data($node);
+                        break;
+                    case 'create_node':
+                        $node = isset($_GET['id']) && $_GET['id'] !== '#' ? $_GET['id'] : '/';
+                        $rslt = $fs->create($node, isset($_GET['text']) ? $_GET['text'] : '', (!isset($_GET['type']) || $_GET['type'] !== 'file'));
+                        break;
+                    case 'rename_node':
+                        $node = isset($_GET['id']) && $_GET['id'] !== '#' ? $_GET['id'] : '/';
+                        $rslt = $fs->rename($node, isset($_GET['text']) ? $_GET['text'] : '');
+                        break;
+                    case 'delete_node':
+                        $node = isset($_GET['id']) && $_GET['id'] !== '#' ? $_GET['id'] : '/';
+                        $rslt = $fs->remove($node);
+                        break;
+                    case 'move_node':
+                        $node = isset($_GET['id']) && $_GET['id'] !== '#' ? $_GET['id'] : '/';
+                        $parn = isset($_GET['parent']) && $_GET['parent'] !== '#' ? $_GET['parent'] : '/';
+                        $rslt = $fs->move($node, $parn);
+                        break;
+                    case 'copy_node':
+                        $node = isset($_GET['id']) && $_GET['id'] !== '#' ? $_GET['id'] : '/';
+                        $parn = isset($_GET['parent']) && $_GET['parent'] !== '#' ? $_GET['parent'] : '/';
+                        $rslt = $fs->copy($node, $parn);
+                        break;
+                    default:
+                        throw new Exception('Unsupported operation: ' . $_GET['operation']);
+                        break;
+                }
+                return response()->json($rslt);
+            }
+            catch (Exception $e) {
+                return response()->json($e->getMessage(), 500);
+            }
+            return response()->json(null);
+        }
+    }
 
 
 

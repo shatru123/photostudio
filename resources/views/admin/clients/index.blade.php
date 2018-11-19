@@ -24,33 +24,30 @@
                       <th>Email</th>
                       <th>Created</th>
                       <th>Updated</th>
-                      <th>Upload Photos</th>
+                      <th>Upload</th>
+                      {{--<th>Upload Photos</th>--}}
                    </tr>
                  </thead>
                  <tbody>
 
                  @if($clients)
 
-
                    @foreach($clients as $client)
-
                     <tr>
                        <td>{{$client->id}}</td>
                        <td><a href="{{route('clients.edit', $client->id)}}">{{$client->name}}</a></td>
                        <td>{{$client->email}}</td>
                        <td>{{$client->created_at->diffForHumans()}}</td>
                        <td>{{$client->updated_at->diffForHumans()}}</td>
-                        <td><form action="{{url('image/upload/store/'.$client->id)}}" class="dropzone" id="my-awesome-dropzone-{{$client->id}}">
-                           @csrf
-                            </form></td>>
+                        <td><a href="{{url('admin/clients/'.$client->id.'/upload')}}">Upload</a></td>
+                        {{--<td><form action="{{url('image/upload/store/'.$client->id)}}" class="dropzone" id="my-awesome-dropzone-{{$client->id}}">--}}
+                           {{--@csrf--}}
+                            {{--</form>--}}
+                        {{--</td>--}}
                     </tr>
 
                      @endforeach
-
-
                    @endif
-
-
                 </tbody>
               </table>
 
